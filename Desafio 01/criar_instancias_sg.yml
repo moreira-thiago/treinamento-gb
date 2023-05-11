@@ -1,0 +1,35 @@
+---
+- name: 'Criação de instancia'
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  remote_user: ubuntu
+
+  vars:
+    keypair: Par_de_chaves # Nome da chave criada na console da AWS
+    region: us-east-1
+    instance_type: t2.micro
+    image:
+      id: ami-0557a15b87f6559cf
+    count: 2
+    security_group: grupos_ja_criados   
+
+  tasks:
+     - name: 'Lançar instâncias'
+       ec2_instance:
+        key_name: "{{ keypair }}"
+        region: "{{ region }}"       
+        image: "{{ image }}"         
+        instance_type: "{{ instance_type }}"
+        count: "{{ count }}"        
+        security_group: "{{security_group}}"
+        wait: true
+        network:
+          assing_public_ip: true
+       register: ec2
+
+
+
+     - name: 'Saida de informações das instâncias'
+       debug:
+        var: ec2

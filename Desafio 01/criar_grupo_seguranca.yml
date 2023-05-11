@@ -1,0 +1,28 @@
+---
+- name: 'Criação segurança de grupo'
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+    keypair: Par_de_chaves # Nome da chave criada na console da AWS
+    region: us-east-1
+  tasks:
+  - name: 'Criar segurança de grupo'
+    ec2_group:
+      name: grupos_ja_criados 
+      description: Allow HTTP and SSH Services
+      region: "{{ region }}"
+      rules:
+        - proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+    register: ec2_group
+  - name: 'Saida de informações das instâncias'
+    debug:
+        var: ec2_group

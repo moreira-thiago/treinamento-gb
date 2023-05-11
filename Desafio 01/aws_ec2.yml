@@ -1,0 +1,19 @@
+---
+plugin: aws_ec2
+aws_collection_name: amazon.aws
+aws_profile: defaults
+
+regions:
+  - us-east-1
+
+# filters:
+#   instance.group-id: id_do_grupo
+
+
+keyed_groups:
+  - security_groups:group_name: default
+    separator: ""
+
+hostnames:
+
+   - ip-address
